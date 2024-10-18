@@ -5,12 +5,54 @@
 #' @import shiny
 #' @noRd
 app_ui <- function(request) {
-  tagList(
-    # Leave this function for adding external resources
-    golem_add_external_resources(),
-    # Your application UI logic
-    fluidPage(
-      golem::golem_welcome_page() # Remove this line to start building your UI
+  # app_ui.R
+  
+  navbarPage("Patient Profile using R/Shiny",
+             tabPanel("Demographics",
+                      sidebarLayout(
+                        sidebarPanel(
+                          fileInput("demographics_file", "Choose Demographics File", accept = c(".sas7bdat"))
+                        ),
+                        mainPanel(
+                          tableOutput("demographics_table")
+                        )
+                      )
+             ),
+             tabPanel("Vital Signs",
+                      sidebarLayout(
+                        sidebarPanel(
+                          fileInput("vitals_file", "Choose Vital Signs File", accept = c(".sas7bdat")),
+                          selectInput("subject_id", "Select Subject", choices = NULL)
+                        ),
+                        mainPanel(
+                          plotOutput("vitals_plot")
+                        )
+                      )
+             ),
+             tabPanel("Adverse Events",
+                      sidebarLayout(
+                        sidebarPanel(
+                          fileInput("adverse_events_file", "Choose Adverse Events File", accept = c(".sas7bdat")),
+                          selectInput("subject_id_ae", "Select Subject", choices = NULL)
+                        ),
+                        mainPanel(
+                          plotlyOutput("adverse_events_plot")
+                        )
+                      )
+             ),
+             tabPanel("Laboratory",
+                      sidebarLayout(
+                        sidebarPanel(
+                          fileInput("laboratory_file", "Choose Laboratory File", accept = c(".sas7bdat")),
+                          selectInput("subject_id_lb", "Select Subject", choices = NULL)
+                        ),
+                        mainPanel(
+                          tableOutput("laboratory_table")
+                        )
+                      )
+             )
+  )
+  # Remove this line to start building your UI
     )
   )
 }
